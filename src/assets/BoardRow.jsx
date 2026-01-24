@@ -56,17 +56,19 @@ const testQuestions = [
 ];
 
 function BoardRow({ catName }) {
+  function handleChooseQuestion(question) {}
+
   return (
     <div>
       {catName}
       {testQuestions.map((question) =>
         question.category === catName ? (
-          <span
+          <BoardTile
             key={question.questionId}
-            onClick={() => console.log(question.question)}
+            onClick={() => handleChooseQuestion(question)}
           >
             {question.questionValue}
-          </span>
+          </BoardTile>
         ) : (
           ""
         ),

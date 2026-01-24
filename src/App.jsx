@@ -1,10 +1,10 @@
-import BoardView from "./assets/BoardView";
+import GameView from "./assets/GameView";
 
 function App() {
   return (
     <div>
       {/* <p>{testQuestions[0].category}</p> */}
-      <BoardView />
+      <GameView />
     </div>
   );
 }
