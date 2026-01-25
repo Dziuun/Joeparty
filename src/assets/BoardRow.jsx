@@ -1,3 +1,5 @@
+import BoardTile from "./BoardTile";
+
 const testQuestions = [
   {
     questionId: 1,

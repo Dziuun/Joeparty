@@ -1,28 +1,17 @@
-import { useReducer } from "react";
+import { useContext, useReducer } from "react";
 import BoardView from "./BoardView";
-const gameState = {
-  curQuestion: undefined,
-  curPlayer: 1,
-  players: [
-    { id: 1, playerName: "Dziun", score: 0 },
-    { id: 2, playerName: "Nuizd", score: 0 },
-  ],
-};
-
-function reducer(state, action) {
-    switch(action.type){
-        case "addPlayer": return {...state, state.players.push(action.payload) };
-
-        default "siema": return state;
-    }
-}
+import { useGameState } from "../contexts/GameStateContext";
 
 function GameView() {
-  const [{curQuestion,curPlayer,players}, dispatch] = useReducer(reducer, gameState);
-
+  const { x } = useGameState();
 
   return (
     <div>
+      {x}
+      {x}
+      {x}
+      {x}
+      {x}
       <BoardView />
     </div>
   );
