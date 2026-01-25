@@ -1,0 +1,28 @@
+{
+  "qustions": [
+    {
+      "category": "anime",
+      "question": "How many guitars does Bocchi have?",
+      "answers": ["one", "two", "three", "five"],
+      "correctAnswerIndex": 1,
+      "correctAnswers": [2, "TWO", "TWOGUITARS"],
+      "questionValue": 100
+    },
+    {
+      "category": "anime",
+      "question": "What is the name of Naruto's tailed beast?",
+      "answers": ["kaibi", "minami", "kyuubi", "goryobi"],
+      "correctAnswerIndex": 2,
+      "correctAnswers": ["KYUUBI", "KYUBI"],
+      "questionValue": 200
+    },
+    {
+      "category": "gaming",
+      "question": "How many teams does a usual game of Counter-Strike have?",
+      "answers": ["3", "4", "2", "8"],
+      "correctAnswerIndex": 2,
+      "correctAnswers": ["2", "TWO"],
+      "questionValue": 200
+    }
+  ]
+}
