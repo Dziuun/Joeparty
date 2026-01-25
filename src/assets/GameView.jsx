@@ -3,15 +3,11 @@ import BoardView from "./BoardView";
 import { useGameState } from "../contexts/GameStateContext";
 
 function GameView() {
-  const { x } = useGameState();
-
+  const { handleAddPlayer } = useGameState();
+  const x = "josh";
   return (
     <div>
-      {x}
-      {x}
-      {x}
-      {x}
-      {x}
+      <button>TESTER</button>
       <BoardView />
     </div>
   );

@@ -11,13 +11,29 @@ const gameState = {
   ],
 };
 
-function reducer() {}
+function reducer(state, action) {
+  switch (action.type) {
+    case "lobby/addPlayer":
+      return { ...state, players: [...state.players, action.payload] };
+  }
+}
 
 function GameStateProvider({ children }) {
-  const [state, dispatch] = useReducer(reducer, gameState);
+  const [{ curQuestion, curPlayer, players }, dispatch] = useReducer(
+    reducer,
+    gameState,
+  );
+
+  function handleAddPlayer(playerName) {
+    const newPlayer = { id: 3, playerName: playerName, score: 0 };
+
+    dispatch({ type: "lobby/addPlayer", payload: newPlayer });
+  }
 
   return (
-    <GameStateContext.Provider value={{ x }}>
+    <GameStateContext.Provider
+      value={{ curQuestion, curPlayer, players, handleAddPlayer }}
+    >
       {children}
     </GameStateContext.Provider>
   );
