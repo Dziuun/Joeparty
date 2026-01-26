@@ -3,19 +3,14 @@ import BoardTile from "./BoardTile";
 
 function BoardRow({ catName }) {
   const { questions } = useGameState();
+  const catQuestions = questions.filter((q) => q.category.includes(catName));
 
   return (
     <div>
       {catName}
-      {/* {questions.map((question) =>
-        question.category === catName ? (
-          <BoardTile key={question.questionId}>
-            {question.questionValue}
-          </BoardTile>
-        ) : (
-          ""
-        ),
-      )} */}
+      {catQuestions.map((q) => (
+        <span>{q.questionValue}</span>
+      ))}
     </div>
   );
 }

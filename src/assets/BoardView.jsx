@@ -10,7 +10,6 @@ function BoardView() {
 
   return (
     <div>
-      {/* this cannot stay as is loading */}
       <p>I am working</p>
       {categories.map((cat) => (
         <BoardRow catName={cat} />
