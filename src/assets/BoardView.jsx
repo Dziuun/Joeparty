@@ -6,17 +6,15 @@ const QUESTIONS_PER_CATEGORY = 1;
 function BoardView() {
   const { gameStatus, questions } = useGameState();
 
+  const categories = [...new Set(questions.map((q) => q.category))];
+
   return (
     <div>
       {/* this cannot stay as is loading */}
       <p>I am working</p>
-      {questions.map((cat, i) =>
-        i % QUESTIONS_PER_CATEGORY === 0 ? (
-          <BoardRow catName={cat.category} />
-        ) : (
-          ""
-        ),
-      )}
+      {categories.map((cat) => (
+        <BoardRow catName={cat} />
+      ))}
     </div>
   );
 }

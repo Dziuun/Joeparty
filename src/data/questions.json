@@ -17,12 +17,246 @@
       "questionValue": 200
     },
     {
+      "category": "anime",
+      "question": "What is Luffy searching for in One Piece?",
+      "answers": ["Treasure", "The One Piece", "Fame", "Power"],
+      "correctAnswerIndex": 1,
+      "correctAnswers": [1, "ONEPIECE"],
+      "questionValue": 300
+    },
+    {
+      "category": "anime",
+      "question": "Which studio animated Attack on Titan season 4?",
+      "answers": ["Madhouse", "Bones", "MAPPA", "Ufotable"],
+      "correctAnswerIndex": 2,
+      "correctAnswers": [2, "MAPPA"],
+      "questionValue": 400
+    },
+    {
+      "category": "anime",
+      "question": "What is the name of Goku's father?",
+      "answers": ["Raditz", "Bardock", "Vegeta", "King Cold"],
+      "correctAnswerIndex": 1,
+      "correctAnswers": [1, "BARDOCK"],
+      "questionValue": 500
+    },
+    {
+      "category": "music",
+      "question": "Who is known as the King of Pop?",
+      "answers": ["Elvis Presley", "Michael Jackson", "Prince", "Drake"],
+      "correctAnswerIndex": 1,
+      "correctAnswers": [1, "MICHAELJACKSON"],
+      "questionValue": 100
+    },
+    {
+      "category": "music",
+      "question": "Which band released the album 'Abbey Road'?",
+      "answers": ["Queen", "The Rolling Stones", "The Beatles", "Pink Floyd"],
+      "correctAnswerIndex": 2,
+      "correctAnswers": [2, "THEBEATLES"],
+      "questionValue": 200
+    },
+    {
+      "category": "music",
+      "question": "What instrument has 88 keys?",
+      "answers": ["Organ", "Piano", "Keyboard", "Harpsichord"],
+      "correctAnswerIndex": 1,
+      "correctAnswers": [1, "PIANO"],
+      "questionValue": 300
+    },
+    {
+      "category": "music",
+      "question": "Which artist released 'Blinding Lights'?",
+      "answers": ["Drake", "Post Malone", "The Weeknd", "Bruno Mars"],
+      "correctAnswerIndex": 2,
+      "correctAnswers": [2, "THEWEEKND"],
+      "questionValue": 400
+    },
+    {
+      "category": "music",
+      "question": "Which classical composer became deaf later in life?",
+      "answers": ["Mozart", "Beethoven", "Bach", "Chopin"],
+      "correctAnswerIndex": 1,
+      "correctAnswers": [1, "BEETHOVEN"],
+      "questionValue": 500
+    },
+
+    {
+      "category": "IT",
+      "question": "What does CPU stand for?",
+      "answers": [
+        "Central Process Unit",
+        "Central Processing Unit",
+        "Computer Power Unit",
+        "Core Processing Utility"
+      ],
+      "correctAnswerIndex": 1,
+      "correctAnswers": [1, "CENTRALPROCESSINGUNIT"],
+      "questionValue": 100
+    },
+    {
+      "category": "IT",
+      "question": "Which language is primarily used for web styling?",
+      "answers": ["HTML", "CSS", "JavaScript", "PHP"],
+      "correctAnswerIndex": 1,
+      "correctAnswers": [1, "CSS"],
+      "questionValue": 200
+    },
+    {
+      "category": "IT",
+      "question": "What does RAM stand for?",
+      "answers": [
+        "Random Access Memory",
+        "Read Access Memory",
+        "Rapid Action Module",
+        "Run Access Memory"
+      ],
+      "correctAnswerIndex": 0,
+      "correctAnswers": [0, "RANDOMACCESSMEMORY"],
+      "questionValue": 300
+    },
+    {
+      "category": "IT",
+      "question": "Which protocol is used for secure web browsing?",
+      "answers": ["HTTP", "FTP", "HTTPS", "SMTP"],
+      "correctAnswerIndex": 2,
+      "correctAnswers": [2, "HTTPS"],
+      "questionValue": 400
+    },
+    {
+      "category": "IT",
+      "question": "Which data structure uses FIFO?",
+      "answers": ["Stack", "Tree", "Queue", "Graph"],
+      "correctAnswerIndex": 2,
+      "correctAnswers": [2, "QUEUE"],
+      "questionValue": 500
+    },
+
+    {
+      "category": "geography",
+      "question": "What is the capital of France?",
+      "answers": ["Berlin", "Madrid", "Paris", "Rome"],
+      "correctAnswerIndex": 2,
+      "correctAnswers": [2, "PARIS"],
+      "questionValue": 100
+    },
+    {
+      "category": "geography",
+      "question": "Which continent is Brazil in?",
+      "answers": ["North America", "South America", "Africa", "Europe"],
+      "correctAnswerIndex": 1,
+      "correctAnswers": [1, "SOUTHAMERICA"],
+      "questionValue": 200
+    },
+    {
+      "category": "geography",
+      "question": "What is the longest river in the world?",
+      "answers": ["Amazon", "Nile", "Yangtze", "Mississippi"],
+      "correctAnswerIndex": 1,
+      "correctAnswers": [1, "NILE"],
+      "questionValue": 300
+    },
+    {
+      "category": "geography",
+      "question": "Which country has the most islands?",
+      "answers": ["Norway", "Indonesia", "Sweden", "Canada"],
+      "correctAnswerIndex": 2,
+      "correctAnswers": [2, "SWEDEN"],
+      "questionValue": 400
+    },
+    {
+      "category": "geography",
+      "question": "What is the smallest country in the world?",
+      "answers": ["Monaco", "Vatican City", "San Marino", "Liechtenstein"],
+      "correctAnswerIndex": 1,
+      "correctAnswers": [1, "VATICANCITY"],
+      "questionValue": 500
+    },
+
+    {
+      "category": "youtubers",
+      "question": "Who is the most subscribed YouTuber as of 2024?",
+      "answers": ["MrBeast", "PewDiePie", "T-Series", "Markiplier"],
+      "correctAnswerIndex": 0,
+      "correctAnswers": [0, "MRBEAST"],
+      "questionValue": 100
+    },
+    {
+      "category": "youtubers",
+      "question": "Which YouTuber is known for 'Let's Play' horror games?",
+      "answers": ["Jacksepticeye", "MrBeast", "Logan Paul", "Dream"],
+      "correctAnswerIndex": 0,
+      "correctAnswers": [0, "JACKSEPTICEYE"],
+      "questionValue": 200
+    },
+    {
+      "category": "youtubers",
+      "question": "Who created the Dream SMP?",
+      "answers": ["Technoblade", "Dream", "TommyInnit", "GeorgeNotFound"],
+      "correctAnswerIndex": 1,
+      "correctAnswers": [1, "DREAM"],
+      "questionValue": 300
+    },
+    {
+      "category": "youtubers",
+      "question": "Which YouTuber is famous for tech reviews?",
+      "answers": [
+        "Linus Tech Tips",
+        "Marques Brownlee",
+        "Unbox Therapy",
+        "All of these"
+      ],
+      "correctAnswerIndex": 1,
+      "correctAnswers": [1, "MKBHD", "MARQUESBROWNLEE"],
+      "questionValue": 400
+    },
+    {
+      "category": "youtubers",
+      "question": "What year did YouTube launch?",
+      "answers": ["2003", "2004", "2005", "2006"],
+      "correctAnswerIndex": 2,
+      "correctAnswers": [2, "2005"],
+      "questionValue": 500
+    },
+    {
       "category": "gaming",
       "question": "How many teams does a usual game of Counter-Strike have?",
       "answers": ["3", "4", "2", "8"],
       "correctAnswerIndex": 2,
       "correctAnswers": ["2", "TWO"],
       "questionValue": 200
+    },
+    {
+      "category": "gaming",
+      "question": "What is the main character's name in The Legend of Zelda?",
+      "answers": ["Zelda", "Link", "Ganondorf", "Epona"],
+      "correctAnswerIndex": 1,
+      "correctAnswers": [1, "LINK"],
+      "questionValue": 200
+    },
+    {
+      "category": "gaming",
+      "question": "Which game popularized the battle royale genre?",
+      "answers": ["Fortnite", "PUBG", "Apex Legends", "H1Z1"],
+      "correctAnswerIndex": 1,
+      "correctAnswers": [1, "PUBG"],
+      "questionValue": 300
+    },
+    {
+      "category": "gaming",
+      "question": "What year was the PlayStation 2 released?",
+      "answers": ["1998", "1999", "2000", "2001"],
+      "correctAnswerIndex": 2,
+      "correctAnswers": [2, "2000"],
+      "questionValue": 400
+    },
+    {
+      "category": "gaming",
+      "question": "Which game engine is primarily used by Unreal Engine?",
+      "answers": ["C++", "Java", "Python", "C#"],
+      "correctAnswerIndex": 0,
+      "correctAnswers": [0, "C++"],
+      "questionValue": 500
     }
   ]
 }
