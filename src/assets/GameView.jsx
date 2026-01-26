@@ -1,14 +1,13 @@
-import { useContext, useReducer } from "react";
 import BoardView from "./BoardView";
 import { useGameState } from "../contexts/GameStateContext";
 
 function GameView() {
-  const { handleAddPlayer } = useGameState();
-  const x = "josh";
+  const { handleAddPlayer, handleStartGame, gameStatus } = useGameState();
+
   return (
     <div>
-      <button>TESTER</button>
-      <BoardView />
+      <button onClick={handleStartGame}>TESTER</button>
+      {gameStatus === "inProgress" ? <BoardView /> : ""}
     </div>
   );
 }

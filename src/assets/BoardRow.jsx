@@ -1,21 +1,21 @@
+import { useGameState } from "../contexts/GameStateContext";
 import BoardTile from "./BoardTile";
 
 function BoardRow({ catName }) {
+  const { questions } = useGameState();
+
   return (
     <div>
       {catName}
-      {testQuestions.map((question) =>
+      {/* {questions.map((question) =>
         question.category === catName ? (
-          <BoardTile
-            key={question.questionId}
-            onClick={() => handleChooseQuestion(question)}
-          >
+          <BoardTile key={question.questionId}>
             {question.questionValue}
           </BoardTile>
         ) : (
           ""
         ),
-      )}
+      )} */}
     </div>
   );
 }
