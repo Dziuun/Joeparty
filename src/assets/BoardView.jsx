@@ -1,5 +1,6 @@
 import BoardRow from "./BoardRow";
 import { useGameState } from "../contexts/GameStateContext";
+import styles from "./BoardView.module.css";
 
 const QUESTIONS_PER_CATEGORY = 1;
 
@@ -9,8 +10,7 @@ function BoardView() {
   const categories = [...new Set(questions.map((q) => q.category))];
 
   return (
-    <div>
-      <p>I am working</p>
+    <div className={styles.boardContainer}>
       {categories.map((cat) => (
         <BoardRow catName={cat} />
       ))}

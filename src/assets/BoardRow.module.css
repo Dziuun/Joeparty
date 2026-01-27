@@ -1,0 +1,9 @@
+.boardRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(5, 100px); /* 5 fixed slots */
+  width: 100%;
+  background-color: red;
+
+  text-align: center;
+}
