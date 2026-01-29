@@ -30,6 +30,21 @@ function reducer(state, action) {
       };
     case "question/popup":
       return { ...state, curQuestion: action.payload, qWindowActive: true };
+    case "question/answered":
+      if (action.payload === "correct")
+        return {
+          ...state,
+          players: state.players.map((p) =>
+            p.id === state.curPlayer
+              ? {
+                  ...p,
+                  score: p.score + Number(state.curQuestion.questionValue),
+                }
+              : p,
+          ),
+          qWindowActive: false,
+        };
+      else return { ...state, qWindowActive: false };
   }
 }
 
@@ -82,8 +97,9 @@ function GameStateProvider({ children }) {
   }
 
   function handleQuestionAnswer(i) {
-    if (curQuestion.correctAnswerIndex === i) console.log("Correct answer!!!");
-    else console.log("That is incorect sir!");
+    if (curQuestion.correctAnswerIndex === i) {
+      dispatch({ type: "question/answered", payload: "correct" });
+    } else dispatch({ type: "question/answered", payload: "false" });
   }
 
   return (
