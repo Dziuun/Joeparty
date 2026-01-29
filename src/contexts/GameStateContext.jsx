@@ -5,7 +5,8 @@ const GameStateContext = createContext();
 const gameState = {
   gameStatus: "inactive",
   isLoadingQuestions: false,
-  curQuestion: undefined,
+  qWindowActive: false,
+  curQuestion: {},
   curPlayer: 1,
   players: [
     { id: 1, playerName: "Dziun", score: 0 },
@@ -27,6 +28,8 @@ function reducer(state, action) {
         isLoadingQuestions: false,
         gameStatus: "inProgress",
       };
+    case "question/popup":
+      return { ...state, curQuestion: action.payload, qWindowActive: true };
   }
 }
 
@@ -37,6 +40,7 @@ function GameStateProvider({ children }) {
       isLoadingQuestions,
       curQuestion,
       curPlayer,
+      qWindowActive,
       players,
       questions,
     },
@@ -73,15 +77,21 @@ function GameStateProvider({ children }) {
     [isLoadingQuestions],
   );
 
+  function handleQuestionPopup(question) {
+    dispatch({ type: "question/popup", payload: question });
+  }
+
   return (
     <GameStateContext.Provider
       value={{
         curQuestion,
         isLoadingQuestions,
         curPlayer,
+        qWindowActive,
         players,
         handleAddPlayer,
         handleStartGame,
+        handleQuestionPopup,
         questions,
         gameStatus,
       }}

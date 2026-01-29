@@ -1,0 +1,28 @@
+:global(body) {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.gameContainer {
+  height: 100vh;
+  width: 100vw;
+  background-color: purple;
+  overflow: hidden;
+  position: relative;
+}
+
+.displayedQuestion {
+  position: absolute;
+  width: 50vw;
+  height: 60vh;
+  background-color: orange;
+
+  top: 10vh;
+  bottom: 30vh;
+  left: 25vw;
+}
+
+.hidden {
+  display: none;
+}

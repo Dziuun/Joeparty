@@ -1,3 +1,8 @@
 .boardTile {
   border: 2px solid;
+  border-radius: 8px;
+}
+
+.boardTile:hover {
+  cursor: pointer;
 }

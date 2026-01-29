@@ -10,7 +10,7 @@ function BoardRow({ catName }) {
     <div className={styles.boardRow}>
       <span>{catName}</span>
       {catQuestions.map((q) => (
-        <BoardTile>{q.questionValue}</BoardTile>
+        <BoardTile question={q}>{q.questionValue}</BoardTile>
       ))}
     </div>
   );
