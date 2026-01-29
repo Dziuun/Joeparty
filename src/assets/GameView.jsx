@@ -1,7 +1,9 @@
-import BoardView from "./BoardView";
-import { useGameState } from "../contexts/GameStateContext";
 import styles from "./GameView.module.css";
+import { useGameState } from "../contexts/GameStateContext";
+
+import BoardView from "./BoardView";
 import PopupBoard from "./PopupBoard";
+import PlayerUi from "./PlayerUi";
 
 function GameView() {
   const { qWindowActive, handleStartGame, gameStatus, curQuestion } =
@@ -12,6 +14,7 @@ function GameView() {
       <button onClick={handleStartGame}>TESTER</button>
       {gameStatus === "inProgress" ? <BoardView /> : ""}
       <PopupBoard />
+      <PlayerUi />
     </div>
   );
 }

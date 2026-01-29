@@ -1,5 +1,11 @@
-.displayedQuestion {
+.popupWindow {
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 1vh;
+
   width: 50vw;
   height: 60vh;
   background-color: orange;
@@ -11,4 +17,8 @@
 
 .hidden {
   display: none;
+}
+
+.question {
+  font-size: 2rem;
 }

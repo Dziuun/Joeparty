@@ -8,11 +8,11 @@ function PopupBoard() {
 
   return (
     <div
-      className={`${styles.displayedQuestion} ${!qWindowActive ? styles.hidden : ""}`}
+      className={`${styles.popupWindow} ${!qWindowActive ? styles.hidden : ""}`}
     >
       {curQuestion?.answers?.length > 0 ? (
         <>
-          {curQuestion.question}
+          <span className={styles.question}>{curQuestion.question}</span>
 
           <PopupBoardAwsers answers={curQuestion.answers} />
         </>
