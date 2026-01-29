@@ -1,4 +1,4 @@
-import { act, createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 
 const GameStateContext = createContext();
 
@@ -81,6 +81,11 @@ function GameStateProvider({ children }) {
     dispatch({ type: "question/popup", payload: question });
   }
 
+  function handleQuestionAnswer(i) {
+    if (curQuestion.correctAnswerIndex === i) console.log("Correct answer!!!");
+    else console.log("That is incorect sir!");
+  }
+
   return (
     <GameStateContext.Provider
       value={{
@@ -92,6 +97,7 @@ function GameStateProvider({ children }) {
         handleAddPlayer,
         handleStartGame,
         handleQuestionPopup,
+        handleQuestionAnswer,
         questions,
         gameStatus,
       }}

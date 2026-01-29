@@ -1,0 +1,14 @@
+.displayedQuestion {
+  position: absolute;
+  width: 50vw;
+  height: 60vh;
+  background-color: orange;
+
+  top: 10vh;
+  bottom: 30vh;
+  left: 25vw;
+}
+
+.hidden {
+  display: none;
+}
