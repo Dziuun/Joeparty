@@ -43,8 +43,22 @@ function reducer(state, action) {
               : p,
           ),
           qWindowActive: false,
+          curPlayer:
+            state.curPlayer < state.players.length ? state.curPlayer + 1 : 1,
+          questions: state.questions.map((q) =>
+            q.id === state.curQuestion.id ? { ...q, answered: true } : q,
+          ),
         };
-      else return { ...state, qWindowActive: false };
+      else
+        return {
+          ...state,
+          qWindowActive: false,
+          curPlayer:
+            state.curPlayer < state.players.length ? state.curPlayer + 1 : 1,
+          questions: state.questions.map((q) =>
+            q.id === state.curQuestion.id ? { ...q, answered: true } : q,
+          ),
+        };
   }
 }
 

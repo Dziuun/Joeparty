@@ -6,7 +6,7 @@ function BoardTile({ children, question }) {
 
   return (
     <div
-      className={styles.boardTile}
+      className={`${styles.boardTile} ${question.answered && styles.hidden}`}
       onClick={() => handleQuestionPopup(question)}
     >
       {children}

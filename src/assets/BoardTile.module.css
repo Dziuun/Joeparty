@@ -6,3 +6,7 @@
 .boardTile:hover {
   cursor: pointer;
 }
+
+.hidden {
+  visibility: hidden;
+}

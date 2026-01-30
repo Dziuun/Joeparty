@@ -1,12 +1,17 @@
 import { useGameState } from "../contexts/GameStateContext";
 
+import styles from "./PlayerUi.module.css";
+
 function PlayerUi() {
   const { players, curPlayer } = useGameState();
 
   return (
-    <div>
+    <div className={styles.uiContainer}>
       {players.map((player) => (
-        <span>{`${player.playerName} ${player.score} `}</span>
+        <div className={styles.playerCard}>
+          <span>{player.playerName}</span>
+          <span>{player.score}</span>
+        </div>
       ))}
     </div>
   );

@@ -1,6 +1,6 @@
 import { useGameState } from "../contexts/GameStateContext";
 import BoardTile from "./BoardTile";
-import styles from "./BoardRow.module.css";
+import styles from "./BoardColumns.module.css";
 
 function BoardRow({ catName }) {
   const { questions } = useGameState();

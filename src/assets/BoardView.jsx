@@ -1,4 +1,4 @@
-import BoardRow from "./BoardRow";
+import BoardColumns from "./BoardColumns";
 import { useGameState } from "../contexts/GameStateContext";
 import styles from "./BoardView.module.css";
 
@@ -12,7 +12,7 @@ function BoardView() {
   return (
     <div className={styles.boardContainer}>
       {categories.map((cat) => (
-        <BoardRow catName={cat} />
+        <BoardColumns catName={cat} />
       ))}
     </div>
   );
