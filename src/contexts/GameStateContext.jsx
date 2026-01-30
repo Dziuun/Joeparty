@@ -8,10 +8,7 @@ const gameState = {
   qWindowActive: false,
   curQuestion: {},
   curPlayer: 1,
-  players: [
-    { id: 1, playerName: "Dziun", score: 0 },
-    { id: 2, playerName: "Nuizd", score: 0 },
-  ],
+  players: [{ id: 1, playerName: "Dziun", score: 0 }],
   questions: [],
 };
 
@@ -19,7 +16,9 @@ function reducer(state, action) {
   switch (action.type) {
     case "lobby/addPlayer":
       return { ...state, players: [...state.players, action.payload] };
-    case "game/loading":
+    case "lobby/local":
+      return { ...state, gameStatus: "lobby/local" };
+    case "lobby/start":
       return { ...state, isLoadingQuestions: true };
     case "game/loaded":
       return {
@@ -78,14 +77,20 @@ function GameStateProvider({ children }) {
 
   // Lobby functions
 
-  function handleStartGame() {
-    dispatch({ type: "game/loading" });
+  function handleCreateLobby() {
+    dispatch({ type: "lobby/local" });
   }
 
-  function handleAddPlayer(playerName) {
-    const newPlayer = { id: 3, playerName: playerName, score: 0 };
+  function handleAddPlayer() {
+    const id = players.length + 1;
+    const newPlayer = { id: id, playerName: `player${id}`, score: 0 };
 
     dispatch({ type: "lobby/addPlayer", payload: newPlayer });
+  }
+
+  function handleStartGame() {
+    console.log("working");
+    dispatch({ type: "lobby/start" });
   }
 
   //Gametime functions
@@ -124,6 +129,7 @@ function GameStateProvider({ children }) {
         curPlayer,
         qWindowActive,
         players,
+        handleCreateLobby,
         handleAddPlayer,
         handleStartGame,
         handleQuestionPopup,

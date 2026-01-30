@@ -1,5 +1,5 @@
 import BoardColumns from "./BoardColumns";
-import { useGameState } from "../contexts/GameStateContext";
+import { useGameState } from "../../contexts/GameStateContext";
 import styles from "./BoardView.module.css";
 
 const QUESTIONS_PER_CATEGORY = 1;

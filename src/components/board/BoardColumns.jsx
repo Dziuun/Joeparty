@@ -1,4 +1,4 @@
-import { useGameState } from "../contexts/GameStateContext";
+import { useGameState } from "../../contexts/GameStateContext";
 import BoardTile from "./BoardTile";
 import styles from "./BoardColumns.module.css";
 

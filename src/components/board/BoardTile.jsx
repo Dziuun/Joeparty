@@ -1,4 +1,4 @@
-import { useGameState } from "../contexts/GameStateContext";
+import { useGameState } from "../../contexts/GameStateContext";
 import styles from "./BoardTile.module.css";
 
 function BoardTile({ children, question }) {

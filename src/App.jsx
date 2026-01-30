@@ -1,4 +1,4 @@
-import GameView from "./assets/GameView";
+import GameView from "./scenes/GameView";
 import { GameStateProvider } from "./contexts/GameStateContext";
 
 function App() {

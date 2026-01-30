@@ -1,0 +1,22 @@
+.lobbyContainer {
+  height: 90vh;
+  width: 90vw;
+
+  border: 2px solid;
+  border-radius: 12px;
+  display: flex;
+}
+
+.playerContainer {
+  height: 100%;
+  width: 60%;
+
+  border: 2px solid red;
+}
+
+.sideMenuContainer {
+  height: 100%;
+  width: 40%;
+
+  border: 2px solid blue;
+}
