@@ -7,13 +7,6 @@
   display: flex;
 }
 
-.playerContainer {
-  height: 100%;
-  width: 60%;
-
-  border: 2px solid red;
-}
-
 .sideMenuContainer {
   height: 100%;
   width: 40%;

@@ -1,3 +1,4 @@
+import LobbyPlayerCardsCont from "../components/LobbyPlayerCardsCont";
 import { useGameState } from "../contexts/GameStateContext";
 import styles from "./LobbyScene.module.css";
 
@@ -6,15 +7,10 @@ function LobbyScene() {
 
   return (
     <div className={styles.lobbyContainer}>
-      <div className={styles.playerContainer}>
-        {players.map((player) => (
-          <div>{player.playerName}</div>
-        ))}
-        {players.length < 4 ? <button onClick={handleAddPlayer}>+</button> : ""}
-      </div>
+      <LobbyPlayerCardsCont />
       <div className={styles.sideMenuContainer}>
         Anwsers type: written/multichoice Game type: turn based/buzz in
-        <button onClick={handleAddPlayer}>back</button>
+        <button>back</button>
         <button onClick={handleStartGame}>Start</button>
       </div>
     </div>
