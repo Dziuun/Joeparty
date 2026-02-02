@@ -5,7 +5,6 @@ function App() {
   return (
     <GameStateProvider>
       <div>
-        {/* <p>{testQuestions[0].category}</p> */}
         <GameView />
       </div>
     </GameStateProvider>

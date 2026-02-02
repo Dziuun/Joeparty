@@ -10,14 +10,31 @@ const gameState = {
   curPlayer: 1,
   players: [{ id: 1, playerName: "Dziun", score: 0 }],
   questions: [],
+  categories: [],
+  serverInfo: {
+    allowedCategories: [],
+    gameType: "standard",
+    answerType: "multichoice",
+  },
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case "lobby/addPlayer":
-      return { ...state, players: [...state.players, action.payload] };
+    case "lobby/dataLoaded":
+      return {
+        ...state,
+        categories: action.payload,
+        serverInfo: { ...state, allowedCategories: action.payload },
+      };
     case "lobby/local":
       return { ...state, gameStatus: "lobby/local" };
+    case "lobby/addPlayer":
+      return { ...state, players: [...state.players, action.payload] };
+    case "lobby/menuData":
+      return {
+        ...state,
+        serverInfo: { ...state.serverInfo, allowedCategories: action.payload },
+      };
     case "lobby/start":
       return { ...state, isLoadingQuestions: true };
     case "game/loaded":
@@ -70,12 +87,25 @@ function GameStateProvider({ children }) {
       curPlayer,
       qWindowActive,
       players,
+      categories,
       questions,
+      serverInfo,
     },
     dispatch,
   ] = useReducer(reducer, gameState);
 
   // Lobby functions
+
+  useEffect(function () {
+    async function getCategories() {
+      const res = await fetch("http://localhost:8000/api/questions/categories");
+      const data = await res.json();
+
+      dispatch({ type: "lobby/dataLoaded", payload: data });
+    }
+
+    getCategories();
+  }, []);
 
   function handleCreateLobby() {
     dispatch({ type: "lobby/local" });
@@ -83,13 +113,23 @@ function GameStateProvider({ children }) {
 
   function handleAddPlayer() {
     const id = players.length + 1;
-    const newPlayer = { id: id, playerName: `player${id}`, score: 0 };
+    const newPlayer = { id: id, playerName: `Joe${id}`, score: 0 };
 
     dispatch({ type: "lobby/addPlayer", payload: newPlayer });
   }
 
+  function handleMenuSelection(e) {
+    console.log(e.target.value);
+    let selection = serverInfo.allowedCategories;
+
+    if (selection.includes(e.target.value))
+      selection = selection.filter((cat) => cat != e.target.value);
+    else selection.push(e.target.value);
+
+    dispatch({ type: "lobby/menuData", payload: selection });
+  }
+
   function handleStartGame() {
-    console.log("working");
     dispatch({ type: "lobby/start" });
   }
 
@@ -99,11 +139,18 @@ function GameStateProvider({ children }) {
     function () {
       async function getQuestions() {
         if (!isLoadingQuestions) return;
+        console.log(serverInfo.allowedCategories);
 
-        const res = await fetch("http://localhost:8000/api/questions");
+        const res = await fetch("http://localhost:8000/api/startGame", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            requestedCategories: serverInfo.allowedCategories,
+          }),
+        });
         const data = await res.json();
 
-        return dispatch({ type: "game/loaded", payload: data });
+        dispatch({ type: "game/loaded", payload: data });
       }
 
       getQuestions();
@@ -129,11 +176,14 @@ function GameStateProvider({ children }) {
         curPlayer,
         qWindowActive,
         players,
+        categories,
         handleCreateLobby,
         handleAddPlayer,
         handleStartGame,
         handleQuestionPopup,
         handleQuestionAnswer,
+        handleMenuSelection,
+        serverInfo,
         questions,
         gameStatus,
       }}
