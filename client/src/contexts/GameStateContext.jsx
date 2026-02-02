@@ -100,7 +100,7 @@ function GameStateProvider({ children }) {
       async function getQuestions() {
         if (!isLoadingQuestions) return;
 
-        const res = await fetch("http://localhost:3000/qustions");
+        const res = await fetch("http://localhost:8000/api/questions");
         const data = await res.json();
 
         return dispatch({ type: "game/loaded", payload: data });
