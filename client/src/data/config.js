@@ -1,1 +1,0 @@
-const MAX_PLAYER_NUMBER = 4;

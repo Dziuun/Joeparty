@@ -1,33 +1,68 @@
 import { createServer } from "http";
 import { connectDB, getCollection } from "./db.js";
+import { getRandomIndexArray, getRandomIndexNumber } from "./utils.js";
+// import { NUMBER_OF_CATEGORIES } from "../config.js";
 
 const PORT = process.env.PORT;
 
 await connectDB();
+const collection = getCollection();
 
-const chooseQuestions = (req, res) => {
+const getRequiredQuestions = (req, res) => {
   let body = "";
 
   req.on("data", (chunk) => {
     body += chunk.toString();
   });
   req.on("end", async () => {
-    const reqCat = JSON.parse(body);
-    const x = reqCat.requestedCategories;
-    const collection = getCollection();
-    const questions = await collection.find({}).toArray();
-    const filteredQuestions = questions.filter((q) => x.includes(q.category));
-    console.log(filteredQuestions);
+    const data = JSON.parse(body);
+    const reqCat = data.requestedCategories;
+    const reqQuestions = await selectQuestions(reqCat);
+
     res.statusCode = 201;
     res.setHeader("Content-Type", "application/json");
     res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
-    console.log(filteredQuestions);
-    res.end(JSON.stringify(filteredQuestions));
+
+    res.end(JSON.stringify(reqQuestions));
   });
 };
 
+async function selectQuestions(reqCat) {
+  const questions = await collection.find({}).toArray();
+  let selCat = [];
+  let selQuestions = [];
+
+  if (reqCat.length > 6) selCat = randomizeCategories(reqCat);
+  else {
+    selCat = reqCat;
+  }
+
+  for (let i = 0; i < selCat.length; i++) {
+    // this goes over cats
+    const curCat = selCat[i];
+    console.log(curCat);
+    for (let j = 1; j < 6; j++) {
+      const curCatQuest = questions.filter(
+        (q) => q.category === curCat && Number(q.questionValue) === j * 100,
+      );
+
+      selQuestions.push(curCatQuest[getRandomIndexNumber(curCatQuest.length)]);
+    }
+  }
+
+  return selQuestions;
+  // 1. Get 6 categories from provided categories 2. get 5 questions for each category 3. qustions need to be in values of 100 => 500
+}
+
+function randomizeCategories(reqCat) {
+  const questionIndexes = getRandomIndexArray(6);
+  let selCat = questionIndexes.map((qi) => (qi = reqCat[qi]));
+  console.log(selCat);
+  return selCat;
+}
+
 const server = createServer(async (req, res) => {
-  const collection = getCollection();
+  const questions = await collection.find({}).toArray();
   if (req.method === "OPTIONS") {
     res.writeHead(204, {
       "Access-Control-Allow-Origin": "http://localhost:5173",
@@ -37,20 +72,18 @@ const server = createServer(async (req, res) => {
     res.end();
     return;
   } else if (req.url === "/api/questions" && req.method === "GET") {
-    const questions = await collection.find({}).toArray();
     res.setHeader("Content-Type", "application/json");
     res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
     res.write(JSON.stringify(questions));
     res.end();
   } else if (req.url === "/api/questions/categories" && req.method === "GET") {
-    const questions = await collection.find({}).toArray();
     const categories = [...new Set(questions.map((q) => q.category))];
     res.setHeader("Content-Type", "application/json");
     res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
     res.write(JSON.stringify(categories));
     res.end();
   } else if (req.url === "/api/startGame" && req.method === "POST") {
-    chooseQuestions(req, res);
+    getRequiredQuestions(req, res);
   }
 });
 

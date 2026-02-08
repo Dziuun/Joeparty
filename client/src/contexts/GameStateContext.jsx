@@ -139,7 +139,6 @@ function GameStateProvider({ children }) {
     function () {
       async function getQuestions() {
         if (!isLoadingQuestions) return;
-        console.log(serverInfo.allowedCategories);
 
         const res = await fetch("http://localhost:8000/api/startGame", {
           method: "POST",
@@ -149,7 +148,7 @@ function GameStateProvider({ children }) {
           }),
         });
         const data = await res.json();
-
+        console.log(data);
         dispatch({ type: "game/loaded", payload: data });
       }
 

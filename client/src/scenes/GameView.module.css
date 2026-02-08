@@ -7,9 +7,9 @@
 .gameContainer {
   height: 100vh;
   width: 100vw;
-  background-color: purple;
   overflow: hidden;
   position: relative;
+  background: linear-gradient(180deg, #ede7f6, #cfc3e8, #b39ddb);
 
   display: flex;
   justify-content: center;
