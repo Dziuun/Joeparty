@@ -7,7 +7,7 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon --env-file=.env server.js"
+    "dev": "nodemon --env-file=.env server.js"
   },
   "dependencies": {
     "dotenv": "^17.2.3",

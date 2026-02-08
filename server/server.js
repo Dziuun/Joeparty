@@ -1,7 +1,7 @@
 import { createServer } from "http";
 import { connectDB, getCollection } from "./db.js";
-import { getRandomIndexArray, getRandomIndexNumber } from "./utils.js";
-// import { NUMBER_OF_CATEGORIES } from "../config.js";
+import { getRandomIndexNumber } from "./utils.js";
+import { NUMBER_OF_CATEGORIES, QUESTIONS_PER_CATEGORY } from "../config.js";
 
 const PORT = process.env.PORT;
 
@@ -40,7 +40,7 @@ async function selectQuestions(reqCat) {
   for (let i = 0; i < selCat.length; i++) {
     // this goes over cats
     const curCat = selCat[i];
-    console.log(curCat);
+
     for (let j = 1; j < 6; j++) {
       const curCatQuest = questions.filter(
         (q) => q.category === curCat && Number(q.questionValue) === j * 100,
@@ -55,8 +55,14 @@ async function selectQuestions(reqCat) {
 }
 
 function randomizeCategories(reqCat) {
-  const questionIndexes = getRandomIndexArray(6);
-  let selCat = questionIndexes.map((qi) => (qi = reqCat[qi]));
+  let selCat = [];
+
+  do {
+    const r = getRandomIndexNumber(reqCat.length);
+    const curCat = reqCat[r];
+
+    if (!selCat.includes(curCat)) selCat.push(curCat);
+  } while (selCat.length < 6);
   console.log(selCat);
   return selCat;
 }

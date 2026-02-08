@@ -1,0 +1,25 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\""
+  },
+  "name": "jeopardy",
+  "version": "1.0.0",
+  "description": "A jeopardy-style game with some modifications built in react that will hopefully work online one day.",
+  "main": "config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dziuun/jeoparty.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Dziuun/jeoparty/issues"
+  },
+  "homepage": "https://github.com/Dziuun/jeoparty#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
