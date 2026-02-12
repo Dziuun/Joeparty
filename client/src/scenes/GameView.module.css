@@ -9,9 +9,21 @@
   width: 100vw;
   overflow: hidden;
   position: relative;
-  background: linear-gradient(180deg, #ede7f6, #cfc3e8, #b39ddb);
+  background: #ee970b;
+  background-image: url("../assets/bg.png");
 
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: -2;
+  animation: scrollBg 40s linear infinite;
+}
+
+@keyframes scrollBg {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -1000px 0;
+  }
 }

@@ -126,6 +126,8 @@ function GameStateProvider({ children }) {
       selection = selection.filter((cat) => cat != e.target.value);
     else selection.push(e.target.value);
 
+    if (selection.length < 6) return;
+
     dispatch({ type: "lobby/menuData", payload: selection });
   }
 
@@ -148,7 +150,7 @@ function GameStateProvider({ children }) {
           }),
         });
         const data = await res.json();
-        console.log(data);
+
         dispatch({ type: "game/loaded", payload: data });
       }
 
