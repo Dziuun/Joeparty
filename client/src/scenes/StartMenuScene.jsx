@@ -6,9 +6,11 @@ function StartMenu() {
   const { handleCreateLobby } = useGameState();
 
   return (
-    <div className={styles.menuContainer}>
+    <div className={styles.menuContainer} onClick={handleCreateLobby}>
       <img src={joeparty} className={styles.title} />
-      <button onClick={handleCreateLobby}>Click here to start!</button>
+      <span className={styles.gameStartButton}>
+        - Click anywhere! to start! -
+      </span>
     </div>
   );
 }

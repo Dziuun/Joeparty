@@ -12,3 +12,21 @@
   max-width: 80vw;
   max-height: 80vh;
 }
+
+.gameStartButton {
+  font-size: 2rem;
+  color: white;
+  font-style: bold;
+
+  animation: slowBlink 2s ease-in-out infinite;
+}
+
+@keyframes slowBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
