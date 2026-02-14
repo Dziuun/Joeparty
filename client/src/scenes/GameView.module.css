@@ -9,21 +9,51 @@
   width: 100vw;
   overflow: hidden;
   position: relative;
-  background: #ee970b;
-  background-image: url("../assets/bg.png");
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: -2;
-  animation: scrollBg 40s linear infinite;
 }
 
-@keyframes scrollBg {
+.title {
+  max-width: 80vw;
+  max-height: 80vh;
+  z-index: 1;
+}
+
+.titleMin {
+  max-width: 10vw;
+  max-height: 10vh;
+  z-index: 1;
+}
+
+.scrollWrapper {
+  position: absolute;
+  overflow: hidden;
+  width: 100vw; /* or 100% */
+  z-index: -2;
+  background: #ee970b;
+}
+
+.scrollTrack {
+  display: flex;
+  width: max-content;
+  animation: scroll 70s linear infinite;
+  z-index: -2;
+}
+
+.scrollTrack img {
+  width: 100vw;
+  flex-shrink: 0;
+  z-index: -2;
+}
+
+@keyframes scroll {
   from {
-    background-position: 0 0;
+    transform: translateX(0);
   }
   to {
-    background-position: -1000px 0;
+    transform: translateX(-50%);
   }
 }

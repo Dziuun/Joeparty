@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 const GameStateContext = createContext();
 
 const gameState = {
-  gameStatus: "inactive",
+  gameStatus: "title",
   isLoadingQuestions: false,
   qWindowActive: false,
   curQuestion: {},
@@ -20,6 +20,8 @@ const gameState = {
 
 function reducer(state, action) {
   switch (action.type) {
+    case "menu/enter":
+      return { state, gameStatus: "menu" };
     case "lobby/dataLoaded":
       return {
         ...state,
@@ -93,6 +95,10 @@ function GameStateProvider({ children }) {
     },
     dispatch,
   ] = useReducer(reducer, gameState);
+
+  //menu functions
+
+  function handleEnterMenu() {}
 
   // Lobby functions
 
