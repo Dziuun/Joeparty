@@ -5,7 +5,7 @@ const GameStateContext = createContext();
 const gameState = {
   gameStatus: "title",
   isLoadingQuestions: false,
-  qWindowActive: false,
+  qWindowActive: false /*local state */,
   curQuestion: {},
   curPlayer: 1,
   players: [{ id: 1, playerName: "Dziun", score: 0 }],
@@ -19,6 +19,7 @@ const gameState = {
 };
 
 function reducer(state, action) {
+  // Router? PHP Router?
   switch (action.type) {
     case "menu/enter":
       return { state, gameStatus: "menu" };

@@ -1,22 +1,12 @@
-import { MongoClient } from "mongodb";
+import mongoose from "mongoose";
 
-const uri = "mongodb://localhost:27017/";
-const client = new MongoClient(uri);
-
-let collection;
+const uri = "";
 
 export async function connectDB() {
   try {
-    await client.connect();
-    const db = client.db("joeparty");
-    collection = db.collection("questions");
-    console.log("Connected to MongoDB");
-    return collection;
+    await mongoose.connect(uri);
+    console.log("Connected with Mongoose");
   } catch (err) {
     console.error("DB connection error:", err);
   }
-}
-
-export function getCollection() {
-  return collection;
 }
