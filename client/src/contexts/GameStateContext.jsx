@@ -105,7 +105,8 @@ function GameStateProvider({ children }) {
 
   useEffect(function () {
     async function getCategories() {
-      const res = await fetch("http://localhost:8000/api/questions/categories");
+      const res = await fetch("http://localhost:8000/api/categories");
+      console.log(res);
       const data = await res.json();
 
       dispatch({ type: "lobby/dataLoaded", payload: data });
