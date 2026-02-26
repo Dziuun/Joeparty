@@ -2,23 +2,25 @@ import { connectDB } from "./db.js";
 import dns from "node:dns/promises";
 import express from "express";
 import categoriesRouter from "./routes/categories.js";
+import getQuestionsRouter from "./routes/getQuestions.js";
 import cors from "cors";
 
 const app = express();
-
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 async function startServer() {
   const db = await connectDB();
 
   app.use("/api/categories", categoriesRouter(db));
+  app.use("/api/getQuestions", getQuestionsRouter(db));
 
   app.listen(8000, () => console.log("server is listening on the port 8000"));
 }
 
 startServer();
+
 // await getQuestions();
 
 // function getQuestions(allowedCategories) {

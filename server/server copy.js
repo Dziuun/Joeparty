@@ -1,30 +1,30 @@
-import { createServer } from "http";
-import { connectDB } from "./db.js";
-import mongoose from "mongoose";
-import { getRandomIndexNumber } from "./utils.js";
-import { NUMBER_OF_CATEGORIES, QUESTIONS_PER_CATEGORY } from "../config.js";
+// import { createServer } from "http";
+// import { connectDB } from "./db.js";
+// import mongoose from "mongoose";
+// import { getRandomIndexNumber } from "./utils.js";
+// import { NUMBER_OF_CATEGORIES, QUESTIONS_PER_CATEGORY } from "../config.js";
 
-import dns from "node:dns/promises";
+// import dns from "node:dns/promises";
 
-dns.setServers(["1.1.1.1", "8.8.8.8"]);
-let db;
+// dns.setServers(["1.1.1.1", "8.8.8.8"]);
+// let db;
 
-async function connectplz() {
-  db = await connectDB();
-}
+// async function connectplz() {
+//   db = await connectDB();
+// }
 
-async function getQuestions() {
-  try {
-    const questions = db.collection("questions");
-    const allQuestions = await questions.find({}).toArray();
-    console.log(allQuestions);
-  } catch (err) {
-    console.error(err);
-  }
-}
+// async function getQuestions() {
+//   try {
+//     const questions = db.collection("questions");
+//     const allQuestions = await questions.find({}).toArray();
+//     console.log(allQuestions);
+//   } catch (err) {
+//     console.error(err);
+//   }
+// }
 
-await connectplz();
-await getQuestions();
+// await connectplz();
+// await getQuestions();
 
 // const getRequiredQuestions = (req, res) => {
 //   let body = "";

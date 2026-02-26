@@ -5,7 +5,6 @@ export default function categoriesRouter(db) {
   const router = express.Router();
   router.get("/", async (req, res) => {
     try {
-      console.log("working");
       const cats = await db.collection("questions").distinct("category");
 
       res.json(cats);
