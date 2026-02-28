@@ -4,8 +4,14 @@ import express from "express";
 import categoriesRouter from "./routes/categories.js";
 import getQuestionsRouter from "./routes/getQuestions.js";
 import cors from "cors";
+import { createServer } from "http";
+import { WebSocketServer } from "ws";
 
 const app = express();
+const server = createServer(app);
+const wss = new WebSocketServer({ server });
+const rooms = new Map();
+
 app.use(express.json());
 app.use(cors());
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
@@ -17,25 +23,15 @@ async function startServer() {
   app.use("/api/getQuestions", getQuestionsRouter(db));
 
   app.listen(8000, () => console.log("server is listening on the port 8000"));
+
+  // wss.on("connection", (socket) => {
+  //   // socket.on("error", (err) => {
+  //   //   console.error(`Error: ${err.message}: ${ip}`);
+  //   // });
+  //   // socket.on("close", () => {
+  //   //   console.log("Client disconected");
+  //   // });
+  // });
 }
 
 startServer();
-
-// await getQuestions();
-
-// function getQuestions(allowedCategories) {
-//   if (allowedCategories.length > 6) getRandomCategories(allowedCategories);
-
-//   getRandomQuestions(allowedCategories);
-//   // randomly select categories
-//   // form the categories, randomly select 30 questions in order
-// }
-
-// app.post("/api/getQuestions", async (req, res) => {
-//   const allowedCategories = req.body;
-//   const allowedQuestions = getQuestions(allowedCategories);
-
-//   console.log(allowedCategories);
-// });
-
-// 1) get categories only, get questions from submited catgory

@@ -5,11 +5,12 @@ const GameStateContext = createContext();
 const gameState = {
   gameStatus: "title",
   isLoadingQuestions: false,
+  isLoading: false,
   qWindowActive: false /*local state */,
   curQuestion: {},
   curPlayer: 1,
-  players: [{ id: 1, playerName: "Dziun", score: 0 }],
-  questions: [],
+  players: [{ id: 1, playerName: "Dziun", score: 0 }], //partially server
+  questions: [], //partially server only
   categories: [],
   serverInfo: {
     allowedCategories: [],
@@ -21,11 +22,16 @@ const gameState = {
 function reducer(state, action) {
   // Router? PHP Router?
   switch (action.type) {
-    case "menu/enter":
-      return { state, gameStatus: "menu" };
-    case "lobby/dataLoaded":
+    case "menu/fetching":
       return {
         ...state,
+        isLoading: true,
+      };
+
+    case "menu/dataLoaded":
+      return {
+        ...state,
+        isLoading: false,
         categories: action.payload,
         serverInfo: { ...state, allowedCategories: action.payload },
       };
@@ -99,21 +105,17 @@ function GameStateProvider({ children }) {
 
   //menu functions
 
-  function handleEnterMenu() {}
+  async function handlePressStart() {
+    dispatch({ type: "menu/fetching" });
+    const res = await fetch("http://localhost:8000/api/categories");
+    const data = await res.json();
+    console.log(data);
 
+    dispatch({ type: "menu/dataLoaded", payload: data });
+  }
+
+  //finished rewrite here for now
   // Lobby functions
-
-  useEffect(function () {
-    async function getCategories() {
-      const res = await fetch("http://localhost:8000/api/categories");
-      console.log(res);
-      const data = await res.json();
-
-      dispatch({ type: "lobby/dataLoaded", payload: data });
-    }
-
-    getCategories();
-  }, []);
 
   function handleCreateLobby() {
     dispatch({ type: "lobby/local" });
@@ -186,6 +188,7 @@ function GameStateProvider({ children }) {
         qWindowActive,
         players,
         categories,
+        handlePressStart,
         handleCreateLobby,
         handleAddPlayer,
         handleStartGame,

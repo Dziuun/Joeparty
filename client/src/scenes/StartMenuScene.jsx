@@ -3,19 +3,25 @@ import { useGameState } from "../contexts/GameStateContext";
 import styles from "./StartMenuScene.module.css";
 
 function StartMenu() {
-  const { handleCreateLobby } = useGameState();
+  const { handlePressStart, handleCreateLobby } = useGameState();
   const [menuPosition, setMenuPosition] = useState("title");
-  //handlClickTitle, then another state because this is ehere the app will do the fetching of data anyway ye
 
-  //css clip path is a thing
+  // needs a popup for loading data from server
 
-  function handleClickStart() {
-    //THIS IS TEMPORARY BROTHER
+  async function handleClickStart() {
+    handlePressStart();
     setMenuPosition("menu/enter");
   }
 
+  function handleClickPlay() {
+    setMenuPosition("menu/gameSelect");
+  }
+
   return (
-    <div className={styles.menuContainer} onClick={handleClickStart}>
+    <div
+      className={styles.menuContainer}
+      onClick={menuPosition === "title" ? handleClickStart : null}
+    >
       {menuPosition === "title" && (
         <span className={styles.gameStartButton}>
           - Click anywhere to start! -
@@ -23,9 +29,15 @@ function StartMenu() {
       )}
       {menuPosition === "menu/enter" && (
         <div>
-          <span onClick={handleCreateLobby}>Start a Game</span>
+          <span onClick={handleClickPlay}>Play</span>
           <span>Shop</span>
           <span>Options</span>
+        </div>
+      )}
+      {menuPosition === "menu/gameSelect" && (
+        <div>
+          <span onClick={handleCreateLobby}>Multiplayer</span>
+          <span>Local</span>
         </div>
       )}
     </div>
