@@ -115,11 +115,12 @@ function GameStateProvider({ children }) {
   }
 
   //finished rewrite here for now
-  // Lobby functions
 
   function handleCreateLobby() {
     dispatch({ type: "lobby/local" });
   }
+
+  // Lobby functions
 
   function handleAddPlayer() {
     const id = players.length + 1;

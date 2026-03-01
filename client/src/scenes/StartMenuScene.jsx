@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useGameState } from "../contexts/GameStateContext";
 import styles from "./StartMenuScene.module.css";
+import Button from "../components/Button";
+import ButtonContainer from "../components/ButtonContainer";
 
 function StartMenu() {
   const { handlePressStart, handleCreateLobby } = useGameState();
@@ -13,7 +15,8 @@ function StartMenu() {
     setMenuPosition("menu/enter");
   }
 
-  function handleClickPlay() {
+  function handleClickPlay(e) {
+    e.preventDefault();
     setMenuPosition("menu/gameSelect");
   }
 
@@ -28,17 +31,21 @@ function StartMenu() {
         </span>
       )}
       {menuPosition === "menu/enter" && (
-        <div>
-          <span onClick={handleClickPlay}>Play</span>
-          <span>Shop</span>
-          <span>Options</span>
-        </div>
+        <ButtonContainer>
+          <Button type="menuNav" handler={handleClickPlay}>
+            Play
+          </Button>
+          <Button type="menuNav">Shop</Button>
+          <Button type="menuNav">Options</Button>
+        </ButtonContainer>
       )}
       {menuPosition === "menu/gameSelect" && (
-        <div>
-          <span onClick={handleCreateLobby}>Multiplayer</span>
-          <span>Local</span>
-        </div>
+        <ButtonContainer>
+          <Button type="menuNav" handler={handleCreateLobby}>
+            Multiplayer
+          </Button>
+          <Button type="menuNav">Local</Button>
+        </ButtonContainer>
       )}
     </div>
   );
