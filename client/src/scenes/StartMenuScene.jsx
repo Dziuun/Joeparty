@@ -5,7 +5,7 @@ import Button from "../components/Button";
 import ButtonContainer from "../components/ButtonContainer";
 
 function StartMenu() {
-  const { handlePressStart, handleCreateLobby } = useGameState();
+  const { handlePressStart, handleCreateMultiplayerLobby } = useGameState();
   const [menuPosition, setMenuPosition] = useState("title");
 
   // needs a popup for loading data from server
@@ -41,7 +41,7 @@ function StartMenu() {
       )}
       {menuPosition === "menu/gameSelect" && (
         <ButtonContainer>
-          <Button type="menuNav" handler={handleCreateLobby}>
+          <Button type="menuNav" handler={handleCreateMultiplayerLobby}>
             Multiplayer
           </Button>
           <Button type="menuNav">Local</Button>

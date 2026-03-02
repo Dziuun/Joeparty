@@ -9,7 +9,7 @@ import StartMenu from "./StartMenuScene";
 import LobbyScene from "./LobbyScene";
 
 import joeparty from "../assets/Joeparty.png";
-
+// if isLoading display a loader later, else render like normal (might do it inside the lobby scene I guess)
 function GameView() {
   const { gameStatus } = useGameState();
 
@@ -20,7 +20,7 @@ function GameView() {
         className={`${gameStatus === "title" ? styles.title : styles.titleMin}`}
       />
       {gameStatus === "title" ? <StartMenu /> : ""}
-      {gameStatus === "lobby/local" ? <LobbyScene /> : ""}
+      {gameStatus === "lobby/multi" ? <LobbyScene /> : ""}
       {gameStatus === "inProgress" ? (
         <>
           <BoardView />

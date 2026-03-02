@@ -22,21 +22,22 @@ const gameState = {
 function reducer(state, action) {
   // Router? PHP Router?
   switch (action.type) {
+    case "setLoading":
+      return { ...state, isLoading: action.payload };
     case "menu/fetching":
       return {
         ...state,
         isLoading: true,
       };
-
     case "menu/dataLoaded":
       return {
         ...state,
         isLoading: false,
         categories: action.payload,
-        serverInfo: { ...state, allowedCategories: action.payload },
+        serverInfo: { ...state.serverInfo, allowedCategories: action.payload },
       };
-    case "lobby/local":
-      return { ...state, gameStatus: "lobby/local" };
+    case "lobby/multi":
+      return { ...state, gameStatus: "lobby/multi" };
     case "lobby/addPlayer":
       return { ...state, players: [...state.players, action.payload] };
     case "lobby/menuData":
@@ -116,8 +117,11 @@ function GameStateProvider({ children }) {
 
   //finished rewrite here for now
 
-  function handleCreateLobby() {
-    dispatch({ type: "lobby/local" });
+  function handleCreateMultiplayerLobby() {
+    dispatch({ type: "lobby/multi" });
+    dispatch({ type: "setLoading", payload: true });
+    // create a room on the server
+    //server generates unique room id, client id and client nickname and ads this client as a room host into the room.
   }
 
   // Lobby functions
@@ -183,6 +187,7 @@ function GameStateProvider({ children }) {
   return (
     <GameStateContext.Provider
       value={{
+        gameStatus,
         curQuestion,
         isLoadingQuestions,
         curPlayer,
@@ -190,7 +195,7 @@ function GameStateProvider({ children }) {
         players,
         categories,
         handlePressStart,
-        handleCreateLobby,
+        handleCreateMultiplayerLobby,
         handleAddPlayer,
         handleStartGame,
         handleQuestionPopup,
@@ -198,7 +203,6 @@ function GameStateProvider({ children }) {
         handleMenuSelection,
         serverInfo,
         questions,
-        gameStatus,
       }}
     >
       {children}
