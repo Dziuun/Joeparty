@@ -1,13 +1,16 @@
 import GameView from "./scenes/GameView";
 import { GameStateProvider } from "./contexts/GameStateContext";
+import { SocketProvider } from "./contexts/SocketContext";
 
 function App() {
   return (
-    <GameStateProvider>
-      <div>
-        <GameView />
-      </div>
-    </GameStateProvider>
+    <SocketProvider>
+      <GameStateProvider>
+        <div>
+          <GameView />
+        </div>
+      </GameStateProvider>
+    </SocketProvider>
   );
 }
 

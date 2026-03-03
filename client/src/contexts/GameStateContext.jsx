@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
+import { useSocket } from "./SocketContext";
 
 const GameStateContext = createContext();
 
@@ -104,6 +105,8 @@ function GameStateProvider({ children }) {
     dispatch,
   ] = useReducer(reducer, gameState);
 
+  const { connect, requestRoom } = useSocket();
+
   //menu functions
 
   async function handlePressStart() {
@@ -118,10 +121,10 @@ function GameStateProvider({ children }) {
   //finished rewrite here for now
 
   function handleCreateMultiplayerLobby() {
+    requestRoom();
     dispatch({ type: "lobby/multi" });
-    dispatch({ type: "setLoading", payload: true });
+    // dispatch({ type: "setLoading", payload: true });
     // create a room on the server
-    //server generates unique room id, client id and client nickname and ads this client as a room host into the room.
   }
 
   // Lobby functions
