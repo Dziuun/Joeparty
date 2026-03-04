@@ -7,7 +7,7 @@ import cors from "cors";
 import { createServer } from "http";
 import { WebSocketServer } from "ws";
 import { createPlayer } from "./players/playerManager.js";
-import { createRoom, getRoom } from "./rooms/roomManager.js";
+import { createRoom, getRoom, joinRoom } from "./rooms/roomManager.js";
 
 const app = express();
 const server = createServer(app);
@@ -25,17 +25,34 @@ async function startServer() {
 
   wss.on("connection", (socket, request) => {
     const player = createPlayer(socket);
-    console.log(player.playerName);
 
     socket.on("message", (rd) => {
       const rawMessage = rd.toString();
       const message = JSON.parse(rawMessage);
-      console.log(message);
 
       switch (message.type) {
         case "CREATE_ROOM":
           createRoom(player);
-          console.log(getRoom(player.roomId));
+          const { socket, id, connected, ...clientSavePlayer } = player;
+          socket.send(
+            JSON.stringify({
+              type: "PLAYER_INFO",
+              playerInfo: clientSavePlayer,
+            }),
+          );
+          break;
+        case "JOIN_ROOM":
+          const room = joinRoom(player);
+
+          //need a util funciton to make info safe to send to client
+          const {} = room;
+          socket.send(
+            JSON.stringify({
+              type: "PLAYER_INFO",
+              playerInfo: clientSavePlayer,
+            }),
+          );
+          break;
       }
     });
 

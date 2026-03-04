@@ -4,8 +4,7 @@ const rooms = new Map();
 
 export function createRoom(player) {
   //create a player id function
-  const roomId = randomUUID();
-  console.log("I work");
+  const roomId = "room_" + randomUUID();
 
   player.roomId = roomId;
 
@@ -18,6 +17,16 @@ export function createRoom(player) {
     activePlayer: null,
     roomSettings: { allowedCategories: [], gameType: "", anwserType: "" },
   });
+}
+
+export function joinRoom(player, roomId) {
+  // should probably have a room browser at some point
+
+  const room = getRoom(roomId);
+
+  room.players.push(player);
+
+  return room;
 }
 
 export function getRoom(roomId) {

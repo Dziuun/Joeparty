@@ -10,7 +10,7 @@ const gameState = {
   qWindowActive: false /*local state */,
   curQuestion: {},
   curPlayer: 1,
-  players: [{ id: 1, playerName: "Dziun", score: 0 }], //partially server
+  players: [], //partially server
   questions: [], //partially server only
   categories: [],
   serverInfo: {
@@ -105,7 +105,21 @@ function GameStateProvider({ children }) {
     dispatch,
   ] = useReducer(reducer, gameState);
 
-  const { connect, requestRoom } = useSocket();
+  const { connect, requestRoom, messageCourier } = useSocket();
+
+  useEffect(
+    function () {
+      if (!messageCourier) return;
+      switch (messageCourier.type) {
+        case "PLAYER_INFO":
+          dispatch({
+            type: "lobby/addPlayer",
+            payload: messageCourier.playerInfo,
+          });
+      }
+    },
+    [messageCourier],
+  );
 
   //menu functions
 
@@ -113,20 +127,24 @@ function GameStateProvider({ children }) {
     dispatch({ type: "menu/fetching" });
     const res = await fetch("http://localhost:8000/api/categories");
     const data = await res.json();
-    console.log(data);
 
     dispatch({ type: "menu/dataLoaded", payload: data });
   }
 
-  //finished rewrite here for now
-
-  function handleCreateMultiplayerLobby() {
-    requestRoom();
+  async function handleCreateMultiplayerLobby() {
+    await requestRoom();
+    console.log(messageCourier);
     dispatch({ type: "lobby/multi" });
+
     // dispatch({ type: "setLoading", payload: true });
     // create a room on the server
   }
 
+  async function handleJoinMultiplayerGame() {
+    await requestJoinRoom();
+  }
+
+  //finished rewrite here for now
   // Lobby functions
 
   function handleAddPlayer() {
@@ -199,6 +217,7 @@ function GameStateProvider({ children }) {
         categories,
         handlePressStart,
         handleCreateMultiplayerLobby,
+        handleJoinMultiplayerGame,
         handleAddPlayer,
         handleStartGame,
         handleQuestionPopup,

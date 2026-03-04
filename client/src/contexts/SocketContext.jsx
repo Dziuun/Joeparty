@@ -5,6 +5,7 @@ const SocketContext = createContext();
 function SocketProvider({ children }) {
   const socket = useRef(null);
   const [connected, setConnected] = useState(false);
+  const [messageCourier, setMessageCourier] = useState(null);
 
   function connect() {
     return new Promise((resolve, reject) => {
@@ -23,10 +24,19 @@ function SocketProvider({ children }) {
       };
       socket.current.onmessage = (e) => {
         const data = JSON.parse(e.data);
-        // handleMessage(data);
+        console.log(data);
+        handleMessage(data);
       };
     });
   }
+
+  function handleMessage(data) {
+    setMessageCourier(data);
+  }
+
+  // async function innitConnection() {
+  //   socket.current.send(JSON.stringify({ type: "INIT_PLAYER" }));
+  // }
 
   async function requestRoom() {
     try {
@@ -39,13 +49,25 @@ function SocketProvider({ children }) {
     }
   }
 
+  async function requestJoinRoom() {
+    await connect();
+    try {
+      await connect();
+      socket.current.send(JSON.stringify({ type: "JOIN_ROOM" }));
+    } catch {
+      throw new Error(
+        "Sorry! Failed to find a game lobby. Please try again later!",
+      );
+    }
+  }
+
   function disconnect() {
     socket.current?.close();
     socket.current = null;
   }
 
   return (
-    <SocketContext.Provider value={{ connect, requestRoom }}>
+    <SocketContext.Provider value={{ connect, requestRoom, messageCourier }}>
       {children}
     </SocketContext.Provider>
   );
