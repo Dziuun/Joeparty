@@ -8,6 +8,8 @@ import { createServer } from "http";
 import { WebSocketServer } from "ws";
 import { createPlayer } from "./players/playerManager.js";
 import { createRoom, getRoom, joinRoom } from "./rooms/roomManager.js";
+import { serializePlayer, serializeRoom } from "./utils/utils.js";
+import { initializeGame } from "./game/gameManager.js";
 
 const app = express();
 const server = createServer(app);
@@ -29,29 +31,21 @@ async function startServer() {
     socket.on("message", (rd) => {
       const rawMessage = rd.toString();
       const message = JSON.parse(rawMessage);
+      let room;
 
       switch (message.type) {
         case "CREATE_ROOM":
-          createRoom(player);
-          const { socket, id, connected, ...clientSavePlayer } = player;
-          socket.send(
-            JSON.stringify({
-              type: "PLAYER_INFO",
-              playerInfo: clientSavePlayer,
-            }),
-          );
+          room = createRoom(player);
+          sendRoomInfo(room, "ROOM_INFO");
+
           break;
         case "JOIN_ROOM":
-          const room = joinRoom(player);
-
-          //need a util funciton to make info safe to send to client
-          const {} = room;
-          socket.send(
-            JSON.stringify({
-              type: "PLAYER_INFO",
-              playerInfo: clientSavePlayer,
-            }),
-          );
+          room = joinRoom(player, message.roomId);
+          sendRoomInfo(room, "ROOM_INFO");
+          break;
+        case "GAME_INIT":
+          room = initializeGame(player);
+          sendRoomInfo(room, "GAME_INIT");
           break;
       }
     });
@@ -63,6 +57,18 @@ async function startServer() {
       console.log("Client disconected");
     });
   });
+
+  function sendRoomInfo(room, type) {
+    const clientSafeRoom = serializeRoom(room);
+    room.players.forEach((player) =>
+      player.socket.send(
+        JSON.stringify({
+          type,
+          roomInfo: clientSafeRoom,
+        }),
+      ),
+    );
+  }
 
   server.listen(8000, () =>
     console.log("server is listening on the port 8000"),

@@ -24,7 +24,7 @@ function SocketProvider({ children }) {
       };
       socket.current.onmessage = (e) => {
         const data = JSON.parse(e.data);
-        console.log(data);
+
         handleMessage(data);
       };
     });
@@ -49,16 +49,20 @@ function SocketProvider({ children }) {
     }
   }
 
-  async function requestJoinRoom() {
+  async function requestJoinRoom(roomId = "random") {
     await connect();
     try {
       await connect();
-      socket.current.send(JSON.stringify({ type: "JOIN_ROOM" }));
+      socket.current.send(JSON.stringify({ type: "JOIN_ROOM", roomId }));
     } catch {
       throw new Error(
         "Sorry! Failed to find a game lobby. Please try again later!",
       );
     }
+  }
+
+  function requestGameStart(settings) {
+    socket.current.send(JSON.stringify({ type: "GAME_INIT", settings }));
   }
 
   function disconnect() {
@@ -67,7 +71,15 @@ function SocketProvider({ children }) {
   }
 
   return (
-    <SocketContext.Provider value={{ connect, requestRoom, messageCourier }}>
+    <SocketContext.Provider
+      value={{
+        connect,
+        requestRoom,
+        requestJoinRoom,
+        requestGameStart,
+        messageCourier,
+      }}
+    >
       {children}
     </SocketContext.Provider>
   );

@@ -21,7 +21,6 @@ const gameState = {
 };
 
 function reducer(state, action) {
-  // Router? PHP Router?
   switch (action.type) {
     case "setLoading":
       return { ...state, isLoading: action.payload };
@@ -39,15 +38,16 @@ function reducer(state, action) {
       };
     case "lobby/multi":
       return { ...state, gameStatus: "lobby/multi" };
-    case "lobby/addPlayer":
-      return { ...state, players: [...state.players, action.payload] };
+    case "lobby/update":
+      return { ...state, players: action.payload.players };
     case "lobby/menuData":
       return {
         ...state,
         serverInfo: { ...state.serverInfo, allowedCategories: action.payload },
       };
+
     case "lobby/start":
-      return { ...state, isLoadingQuestions: true };
+      return { ...state, gameStatus: action.payload.gameStatus };
     case "game/loaded":
       return {
         ...state,
@@ -105,17 +105,18 @@ function GameStateProvider({ children }) {
     dispatch,
   ] = useReducer(reducer, gameState);
 
-  const { connect, requestRoom, messageCourier } = useSocket();
+  const { requestRoom, requestJoinRoom, requestGameStart, messageCourier } =
+    useSocket();
 
   useEffect(
     function () {
       if (!messageCourier) return;
       switch (messageCourier.type) {
-        case "PLAYER_INFO":
-          dispatch({
-            type: "lobby/addPlayer",
-            payload: messageCourier.playerInfo,
-          });
+        case "ROOM_INFO":
+          dispatch({ type: "lobby/update", payload: messageCourier.roomInfo });
+          break;
+        case "GAME_INIT":
+          dispatch({ type: "Lobby/start", payload: messageCourier.roomInfo });
       }
     },
     [messageCourier],
@@ -133,19 +134,15 @@ function GameStateProvider({ children }) {
 
   async function handleCreateMultiplayerLobby() {
     await requestRoom();
-    console.log(messageCourier);
-    dispatch({ type: "lobby/multi" });
 
-    // dispatch({ type: "setLoading", payload: true });
-    // create a room on the server
+    dispatch({ type: "lobby/multi" });
   }
 
   async function handleJoinMultiplayerGame() {
     await requestJoinRoom();
-  }
 
-  //finished rewrite here for now
-  // Lobby functions
+    dispatch({ type: "lobby/multi" });
+  }
 
   function handleAddPlayer() {
     const id = players.length + 1;
@@ -168,9 +165,12 @@ function GameStateProvider({ children }) {
   }
 
   function handleStartGame() {
-    dispatch({ type: "lobby/start" });
+    //we pass allowed categories in here
+    requestGameStart(serverInfo);
   }
 
+  //finished rewrite here for now
+  // Lobby functions
   //Gametime functions
 
   useEffect(

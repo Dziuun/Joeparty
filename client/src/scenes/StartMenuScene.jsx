@@ -8,7 +8,7 @@ function StartMenu() {
   const {
     handlePressStart,
     handleCreateMultiplayerLobby,
-    handleJoinMultiplayerLobby,
+    handleJoinMultiplayerGame,
   } = useGameState();
   const [menuPosition, setMenuPosition] = useState("title");
 
@@ -45,13 +45,15 @@ function StartMenu() {
       )}
       {menuPosition === "menu/gameSelect" && (
         <ButtonContainer>
+          <Button type="menuNav" handler={handleJoinMultiplayerGame}>
+            Quick play
+          </Button>
           <Button type="menuNav" handler={handleCreateMultiplayerLobby}>
             Create a room
           </Button>
-          <Button type="menuNav" handler={handleJoinMultiplayerLobby}>
+          <Button type="menuNav" handler={handleJoinMultiplayerGame}>
             Join a room
           </Button>
-          <Button type="menuNav">Local</Button>
         </ButtonContainer>
       )}
     </div>

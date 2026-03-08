@@ -11,13 +11,13 @@ function LobbyPlayerCardsCont() {
       {players.map((player) => (
         <LobbyPlayerCard player={player}>{player.playerName}</LobbyPlayerCard>
       ))}
-      {players.length < 4 ? (
+      {/* {players.length < 4 ? (
         <button className={styles.addPlayerButton} onClick={handleAddPlayer}>
           +
         </button>
       ) : (
         ""
-      )}
+      )} */}
     </div>
   );
 }
