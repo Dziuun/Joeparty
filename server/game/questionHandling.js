@@ -1,32 +1,14 @@
-import express from "express";
-import { Router } from "express";
 import { getRandomIndexNumber } from "../utils.js";
 
-export default function getQuestionsRouter(db) {
-  const router = express.Router();
-  router.post("/", async (req, res) => {
-    try {
-      let allowedCat = req.body.requestedCategories;
+export async function getQuestions(allowedCat, db) {
+  if (allowedCat.length > 6) allowedCat = randomizeCategories(allowedCat);
 
-      console.log(allowedCat);
-      if (allowedCat.length > 6)
-        allowedCat = await randomizeCategories(allowedCat);
+  const questions = await RandomizeQuestions(allowedCat, db);
 
-      const questions = await RandomizeQuestions(allowedCat, db);
-
-      res.json(questions);
-    } catch (err) {
-      console.error(err);
-      res
-        .status(500)
-        .send("Could not fetch questions. Please try another time!");
-    }
-  });
-
-  return router;
+  return questions;
 }
 
-async function randomizeCategories(allowedCat) {
+function randomizeCategories(allowedCat) {
   let filteredCategories = [];
   for (let i = 0; i < 6; i++) {
     const r = getRandomIndexNumber(allowedCat.length);

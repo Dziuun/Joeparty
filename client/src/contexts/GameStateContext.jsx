@@ -47,7 +47,11 @@ function reducer(state, action) {
       };
 
     case "lobby/start":
-      return { ...state, gameStatus: action.payload.gameStatus };
+      return {
+        ...state,
+        gameStatus: action.payload.gameStatus,
+        questions: action.payload.questions,
+      };
     case "game/loaded":
       return {
         ...state,
@@ -116,7 +120,8 @@ function GameStateProvider({ children }) {
           dispatch({ type: "lobby/update", payload: messageCourier.roomInfo });
           break;
         case "GAME_INIT":
-          dispatch({ type: "Lobby/start", payload: messageCourier.roomInfo });
+          dispatch({ type: "lobby/start", payload: messageCourier.roomInfo });
+          break;
       }
     },
     [messageCourier],

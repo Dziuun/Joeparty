@@ -2,7 +2,6 @@ import { connectDB } from "./db.js";
 import dns from "node:dns/promises";
 import express from "express";
 import categoriesRouter from "./routes/categories.js";
-import getQuestionsRouter from "./routes/getQuestions.js";
 import cors from "cors";
 import { createServer } from "http";
 import { WebSocketServer } from "ws";
@@ -23,12 +22,11 @@ async function startServer() {
   const db = await connectDB();
 
   app.use("/api/categories", categoriesRouter(db));
-  app.use("/api/getQuestions", getQuestionsRouter(db));
 
   wss.on("connection", (socket, request) => {
     const player = createPlayer(socket);
 
-    socket.on("message", (rd) => {
+    socket.on("message", async (rd) => {
       const rawMessage = rd.toString();
       const message = JSON.parse(rawMessage);
       let room;
@@ -44,7 +42,8 @@ async function startServer() {
           sendRoomInfo(room, "ROOM_INFO");
           break;
         case "GAME_INIT":
-          room = initializeGame(player);
+          room = await initializeGame(player, message.settings, db);
+          console.log(room);
           sendRoomInfo(room, "GAME_INIT");
           break;
       }

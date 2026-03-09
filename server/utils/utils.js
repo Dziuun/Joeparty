@@ -7,9 +7,17 @@ export function serializePlayer(player) {
 }
 
 export function serializeRoom(room) {
-  const safeRoom = room;
+  return {
+    ...room,
+    players: room.players.map((player) => (player = serializePlayer(player))),
+    questions: room.questions.map(
+      (question) => (question = serializeQuestion(question)),
+    ),
+  };
+}
 
-  safeRoom.players.forEach((player) => (player = serializePlayer(player)));
+function serializeQuestion(question) {
+  const { correctAnswerIndex, correctAnswers, ...safeQuestion } = question;
 
-  return safeRoom;
+  return safeQuestion;
 }
