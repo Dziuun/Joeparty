@@ -20,7 +20,7 @@ function GameView() {
         className={`${gameStatus === "title" ? styles.title : styles.titleMin}`}
       />
       {gameStatus === "title" ? <StartMenu /> : ""}
-      {gameStatus === "lobby/multi" ? <LobbyScene /> : ""}
+      {gameStatus === "lobby" ? <LobbyScene /> : ""}
       {gameStatus === "inProgress" ? (
         <>
           <BoardView />

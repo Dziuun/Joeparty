@@ -9,6 +9,7 @@ import { createPlayer } from "./players/playerManager.js";
 import { createRoom, getRoom, joinRoom } from "./rooms/roomManager.js";
 import { serializePlayer, serializeRoom } from "./utils/utils.js";
 import { initializeGame } from "./game/gameManager.js";
+import { provideQuestion } from "./game/questionHandling.js";
 
 const app = express();
 const server = createServer(app);
@@ -35,7 +36,6 @@ async function startServer() {
         case "CREATE_ROOM":
           room = createRoom(player);
           sendRoomInfo(room, "ROOM_INFO");
-
           break;
         case "JOIN_ROOM":
           room = joinRoom(player, message.roomId);
@@ -43,9 +43,14 @@ async function startServer() {
           break;
         case "GAME_INIT":
           room = await initializeGame(player, message.settings, db);
-          console.log(room);
           sendRoomInfo(room, "GAME_INIT");
           break;
+        case "QUESTION_SELECTED":
+          room = provideQuestion(message.questionId, player);
+          sendRoomInfo(room, "QUESTION_SELECTED");
+          break;
+        default:
+          throw new Error("Unnknown request!");
       }
     });
 

@@ -65,6 +65,12 @@ function SocketProvider({ children }) {
     socket.current.send(JSON.stringify({ type: "GAME_INIT", settings }));
   }
 
+  function requestQuestion(questionId) {
+    socket.current.send(
+      JSON.stringify({ type: "QUESTION_SELECTED", questionId }),
+    );
+  }
+
   function disconnect() {
     socket.current?.close();
     socket.current = null;
@@ -77,6 +83,7 @@ function SocketProvider({ children }) {
         requestRoom,
         requestJoinRoom,
         requestGameStart,
+        requestQuestion,
         messageCourier,
       }}
     >

@@ -17,7 +17,7 @@ export function createRoom(player) {
     questions: [],
     curQuestion: {},
     activePlayer: null,
-    roomSettings: { allowedCategories: [], gameType: "", anwserType: "" },
+    gameSettings: { allowedCategories: [], gameType: "", anwserType: "" },
   });
 
   return getRoom(roomId);

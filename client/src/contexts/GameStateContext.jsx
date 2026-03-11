@@ -4,16 +4,24 @@ import { useSocket } from "./SocketContext";
 const GameStateContext = createContext();
 
 const gameState = {
-  gameStatus: "title",
+  //local
   isLoadingQuestions: false,
   isLoading: false,
-  qWindowActive: false /*local state */,
-  curQuestion: {},
+  qWindowActive: false,
+  isHost: false,
+  //api
+  categories: [], //consider change to available categories or all categories
+  //multi
+  roomdId: "",
+  gameStatus: "title",
+  host: "",
+  players: [],
+  // current round categories and current round must be added
   curPlayer: 1,
-  players: [], //partially server
-  questions: [], //partially server only
-  categories: [],
-  serverInfo: {
+  questions: [],
+  curQuestion: {},
+  //game type info for server (sent only at game init)
+  gameSettings: {
     allowedCategories: [],
     gameType: "standard",
     answerType: "multichoice",
@@ -34,33 +42,23 @@ function reducer(state, action) {
         ...state,
         isLoading: false,
         categories: action.payload,
-        serverInfo: { ...state.serverInfo, allowedCategories: action.payload },
+        gameSettings: {
+          ...state.gameSettings,
+          allowedCategories: action.payload,
+        },
       };
-    case "lobby/multi":
-      return { ...state, gameStatus: "lobby/multi" };
     case "lobby/update":
       return { ...state, players: action.payload.players };
     case "lobby/menuData":
       return {
         ...state,
-        serverInfo: { ...state.serverInfo, allowedCategories: action.payload },
-      };
-
-    case "lobby/start":
-      return {
-        ...state,
-        gameStatus: action.payload.gameStatus,
-        questions: action.payload.questions,
-      };
-    case "game/loaded":
-      return {
-        ...state,
-        questions: action.payload,
-        isLoadingQuestions: false,
-        gameStatus: "inProgress",
+        gameSettings: {
+          ...state.gameSettings,
+          allowedCategories: action.payload,
+        },
       };
     case "question/popup":
-      return { ...state, curQuestion: action.payload, qWindowActive: true };
+      return { ...state, qWindowActive: true };
     case "question/answered":
       if (action.payload === "correct")
         return {
@@ -90,6 +88,17 @@ function reducer(state, action) {
             q.id === state.curQuestion.id ? { ...q, answered: true } : q,
           ),
         };
+    case "gameState/synchronize":
+      return {
+        ...state,
+        roomId: action.payload.roomId,
+        gameStatus: action.payload.gameStatus,
+        host: action.payload.host,
+        players: action.payload.players,
+        questions: action.payload.questions,
+        curQuestion: action.payload.curQuestion,
+        curPlayer: action.payload.activePlayer,
+      };
   }
 }
 
@@ -104,24 +113,41 @@ function GameStateProvider({ children }) {
       players,
       categories,
       questions,
-      serverInfo,
+      gameSettings,
     },
     dispatch,
   ] = useReducer(reducer, gameState);
 
-  const { requestRoom, requestJoinRoom, requestGameStart, messageCourier } =
-    useSocket();
+  const {
+    requestRoom,
+    requestJoinRoom,
+    requestGameStart,
+    requestQuestion,
+    messageCourier,
+  } = useSocket();
 
   useEffect(
     function () {
       if (!messageCourier) return;
       switch (messageCourier.type) {
         case "ROOM_INFO":
-          dispatch({ type: "lobby/update", payload: messageCourier.roomInfo });
+          dispatch({
+            type: "gameState/synchronize",
+            payload: messageCourier.roomInfo,
+          });
           break;
         case "GAME_INIT":
-          dispatch({ type: "lobby/start", payload: messageCourier.roomInfo });
+          dispatch({
+            type: "gameState/synchronize",
+            payload: messageCourier.roomInfo,
+          });
           break;
+        case "QUESTION_SELECTED":
+          dispatch({
+            type: "gameState/synchronize",
+            payload: messageCourier.roomInfo,
+          });
+          dispatch({ type: "question/popup" });
       }
     },
     [messageCourier],
@@ -139,26 +165,15 @@ function GameStateProvider({ children }) {
 
   async function handleCreateMultiplayerLobby() {
     await requestRoom();
-
-    dispatch({ type: "lobby/multi" });
   }
 
   async function handleJoinMultiplayerGame() {
     await requestJoinRoom();
-
-    dispatch({ type: "lobby/multi" });
-  }
-
-  function handleAddPlayer() {
-    const id = players.length + 1;
-    const newPlayer = { id: id, playerName: `Joe${id}`, score: 0 };
-
-    dispatch({ type: "lobby/addPlayer", payload: newPlayer });
   }
 
   function handleMenuSelection(e) {
     console.log(e.target.value);
-    let selection = serverInfo.allowedCategories;
+    let selection = gameSettings.allowedCategories;
 
     if (selection.includes(e.target.value))
       selection = selection.filter((cat) => cat != e.target.value);
@@ -170,39 +185,18 @@ function GameStateProvider({ children }) {
   }
 
   function handleStartGame() {
-    //we pass allowed categories in here
-    requestGameStart(serverInfo);
+    requestGameStart(gameSettings);
   }
+
+  //Game functions
+
+  function handleSelectQuestion(_id) {
+    requestQuestion(_id);
+  }
+
+  function handleQuestionAnswer()
 
   //finished rewrite here for now
-  // Lobby functions
-  //Gametime functions
-
-  useEffect(
-    function () {
-      async function getQuestions() {
-        if (!isLoadingQuestions) return;
-
-        const res = await fetch("http://localhost:8000/api/getQuestions", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            requestedCategories: serverInfo.allowedCategories,
-          }),
-        });
-        const data = await res.json();
-
-        dispatch({ type: "game/loaded", payload: data });
-      }
-
-      getQuestions();
-    },
-    [isLoadingQuestions],
-  );
-
-  function handleQuestionPopup(question) {
-    dispatch({ type: "question/popup", payload: question });
-  }
 
   function handleQuestionAnswer(i) {
     if (curQuestion.correctAnswerIndex === i) {
@@ -223,12 +217,12 @@ function GameStateProvider({ children }) {
         handlePressStart,
         handleCreateMultiplayerLobby,
         handleJoinMultiplayerGame,
-        handleAddPlayer,
+
         handleStartGame,
-        handleQuestionPopup,
+        handleSelectQuestion,
         handleQuestionAnswer,
         handleMenuSelection,
-        serverInfo,
+        gameSettings,
         questions,
       }}
     >

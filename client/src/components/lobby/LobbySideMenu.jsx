@@ -2,7 +2,7 @@ import { useGameState } from "../../contexts/GameStateContext";
 import styles from "./LobbySideMenu.module.css";
 
 function LobbySideMenu() {
-  const { handleStartGame, handleMenuSelection, categories, serverInfo } =
+  const { handleStartGame, handleMenuSelection, categories, gameSettings } =
     useGameState();
 
   return (
@@ -30,7 +30,7 @@ function LobbySideMenu() {
               type="checkbox"
               value={cat}
               onChange={(e) => handleMenuSelection(e)}
-              checked={serverInfo.allowedCategories.includes(cat)}
+              checked={gameSettings.allowedCategories.includes(cat)}
             ></input>
           </span>
         ))}

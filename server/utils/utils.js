@@ -10,14 +10,30 @@ export function serializeRoom(room) {
   return {
     ...room,
     players: room.players.map((player) => (player = serializePlayer(player))),
-    questions: room.questions.map(
-      (question) => (question = serializeQuestion(question)),
-    ),
+    questions: room.questions?.map((question) => serializeQuestion(question)),
+    curQuestion: room.curQuestion
+      ? serializeCurrentQuestion(room.curQuestion)
+      : {},
   };
 }
 
-function serializeQuestion(question) {
-  const { correctAnswerIndex, correctAnswers, ...safeQuestion } = question;
+function serializeQuestion(questionObj) {
+  const {
+    correctAnswerIndex,
+    correctAnswers,
+    answers,
+    question,
+    ...safeQuestion
+  } = questionObj;
 
   return safeQuestion;
+}
+
+function serializeCurrentQuestion(curQuestion) {
+  if (!curQuestion) return;
+
+  const { correctAnswerIndex, correctAnswers, ...safeCurQuestion } =
+    curQuestion;
+
+  return safeCurQuestion;
 }
