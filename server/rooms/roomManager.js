@@ -16,7 +16,7 @@ export function createRoom(player) {
     players: [player],
     questions: [],
     curQuestion: {},
-    activePlayer: null,
+    activePlayer: 0,
     gameSettings: { allowedCategories: [], gameType: "", anwserType: "" },
   });
 
@@ -32,6 +32,8 @@ export function joinRoom(player, roomId) {
     );
     const randomRoom =
       joinableRooms[getRandomIndexNumber(joinableRooms.length)];
+
+    player.roomId = randomRoom.roomId;
 
     randomRoom.players.push(player);
 

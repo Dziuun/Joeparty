@@ -62,12 +62,18 @@ function SocketProvider({ children }) {
   }
 
   function requestGameStart(settings) {
-    socket.current.send(JSON.stringify({ type: "GAME_INIT", settings }));
+    socket.current.send(JSON.stringify({ type: "GAME_INIT", settings })); //TODO Can it be send without Serialization?
   }
 
   function requestQuestion(questionId) {
     socket.current.send(
       JSON.stringify({ type: "QUESTION_SELECTED", questionId }),
+    );
+  }
+
+  function requestValidation(answerIndex) {
+    socket.current.send(
+      JSON.stringify({ type: "QUESTION_ANSWERED", answerIndex }),
     );
   }
 
@@ -84,6 +90,7 @@ function SocketProvider({ children }) {
         requestJoinRoom,
         requestGameStart,
         requestQuestion,
+        requestValidation,
         messageCourier,
       }}
     >

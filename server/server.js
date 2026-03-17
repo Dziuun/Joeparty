@@ -7,8 +7,8 @@ import { createServer } from "http";
 import { WebSocketServer } from "ws";
 import { createPlayer } from "./players/playerManager.js";
 import { createRoom, getRoom, joinRoom } from "./rooms/roomManager.js";
-import { serializePlayer, serializeRoom } from "./utils/utils.js";
-import { initializeGame } from "./game/gameManager.js";
+import { serializeRoom } from "./utils/serializers.js";
+import { handleAnswer, initializeGame } from "./game/gameManager.js";
 import { provideQuestion } from "./game/questionHandling.js";
 
 const app = express();
@@ -33,7 +33,7 @@ async function startServer() {
       let room;
 
       switch (message.type) {
-        case "CREATE_ROOM":
+        case "CREATE_ROOM": // TODO Can be moved to GameStateConstants or so to not use magic strings
           room = createRoom(player);
           sendRoomInfo(room, "ROOM_INFO");
           break;
@@ -49,6 +49,10 @@ async function startServer() {
           room = provideQuestion(message.questionId, player);
           sendRoomInfo(room, "QUESTION_SELECTED");
           break;
+        case "QUESTION_ANSWERED":
+          room = handleAnswer(message.answerIndex, player);
+          sendRoomInfo(room, "QUESTION_ANSWERED");
+          break;
         default:
           throw new Error("Unnknown request!");
       }
@@ -58,6 +62,8 @@ async function startServer() {
       console.error(`Error: ${err.message}: ${ip}`);
     });
     socket.on("close", () => {
+      //get room and check player amount
+      //delete room after said period of time
       console.log("Client disconected");
     });
   });

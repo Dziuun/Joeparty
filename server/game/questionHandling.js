@@ -1,8 +1,10 @@
+import { NUMBER_OF_CATEGORIES } from "../../config.js";
 import { getRoom } from "../rooms/roomManager.js";
 import { getRandomIndexNumber } from "../utils.js";
 
 export async function getQuestions(allowedCat, db) {
-  if (allowedCat.length > 6) allowedCat = randomizeCategories(allowedCat);
+  if (allowedCat.length > NUMBER_OF_CATEGORIES)
+    allowedCat = randomizeCategories(allowedCat);
 
   const questions = await RandomizeQuestions(allowedCat, db);
 
@@ -21,7 +23,7 @@ export function provideQuestion(questionId, player) {
 
 function randomizeCategories(allowedCat) {
   let filteredCategories = [];
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < NUMBER_OF_CATEGORIES; i++) {
     const r = getRandomIndexNumber(allowedCat.length);
 
     filteredCategories[i] = allowedCat[r];

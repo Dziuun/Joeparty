@@ -17,7 +17,7 @@ const gameState = {
   host: "",
   players: [],
   // current round categories and current round must be added
-  curPlayer: 1,
+  activePlayer: 0,
   questions: [],
   curQuestion: {},
   //game type info for server (sent only at game init)
@@ -58,36 +58,7 @@ function reducer(state, action) {
         },
       };
     case "question/popup":
-      return { ...state, qWindowActive: true };
-    case "question/answered":
-      if (action.payload === "correct")
-        return {
-          ...state,
-          players: state.players.map((p) =>
-            p.id === state.curPlayer
-              ? {
-                  ...p,
-                  score: p.score + Number(state.curQuestion.questionValue),
-                }
-              : p,
-          ),
-          qWindowActive: false,
-          curPlayer:
-            state.curPlayer < state.players.length ? state.curPlayer + 1 : 1,
-          questions: state.questions.map((q) =>
-            q.id === state.curQuestion.id ? { ...q, answered: true } : q,
-          ),
-        };
-      else
-        return {
-          ...state,
-          qWindowActive: false,
-          curPlayer:
-            state.curPlayer < state.players.length ? state.curPlayer + 1 : 1,
-          questions: state.questions.map((q) =>
-            q.id === state.curQuestion.id ? { ...q, answered: true } : q,
-          ),
-        };
+      return { ...state, qWindowActive: action.payload };
     case "gameState/synchronize":
       return {
         ...state,
@@ -123,6 +94,7 @@ function GameStateProvider({ children }) {
     requestJoinRoom,
     requestGameStart,
     requestQuestion,
+    requestValidation,
     messageCourier,
   } = useSocket();
 
@@ -147,7 +119,15 @@ function GameStateProvider({ children }) {
             type: "gameState/synchronize",
             payload: messageCourier.roomInfo,
           });
-          dispatch({ type: "question/popup" });
+          dispatch({ type: "question/popup", payload: !qWindowActive });
+          break;
+        case "QUESTION_ANSWERED":
+          dispatch({
+            type: "gameState/synchronize",
+            payload: messageCourier.roomInfo,
+          });
+          dispatch({ type: "question/popup", payload: !qWindowActive });
+          break;
       }
     },
     [messageCourier],
@@ -194,14 +174,10 @@ function GameStateProvider({ children }) {
     requestQuestion(_id);
   }
 
-  function handleQuestionAnswer()
-
   //finished rewrite here for now
 
-  function handleQuestionAnswer(i) {
-    if (curQuestion.correctAnswerIndex === i) {
-      dispatch({ type: "question/answered", payload: "correct" });
-    } else dispatch({ type: "question/answered", payload: "false" });
+  function handleQuestionAnswer(answerIndex) {
+    requestValidation(answerIndex);
   }
 
   return (
@@ -217,7 +193,6 @@ function GameStateProvider({ children }) {
         handlePressStart,
         handleCreateMultiplayerLobby,
         handleJoinMultiplayerGame,
-
         handleStartGame,
         handleSelectQuestion,
         handleQuestionAnswer,
